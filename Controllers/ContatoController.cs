@@ -50,7 +50,7 @@ namespace ModuloAPI.Controllers
         {
             _context.Add(contato);
             _context.SaveChanges();
-            return Ok(contato);
+            return CreatedAtAction(nameof(GetById), new { id = contato.Id }, contato);
         }
 
         [HttpPut("{id}")]
@@ -82,6 +82,5 @@ namespace ModuloAPI.Controllers
 
             return Ok(new { message = "Registro removido do banco" });
         }
-
     }
 }
