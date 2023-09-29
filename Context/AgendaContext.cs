@@ -11,7 +11,6 @@ namespace ModuloAPI.Context
     {
         public AgendaContext(DbContextOptions<AgendaContext> options) : base(options)
         {
-
         }
 
         public DbSet<Contato> Contatos { get; set; }

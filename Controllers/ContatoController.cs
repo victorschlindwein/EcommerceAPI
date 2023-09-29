@@ -18,6 +18,33 @@ namespace ModuloAPI.Controllers
             _context = context;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var contato = _context.Contatos.Find(id);
+            if (contato == null)
+                return NoContent();
+            return Ok(contato);
+        }
+
+        [HttpGet("GetByName")]
+        public IActionResult GetByName(string name)
+        {
+            var contato = _context.Contatos.Where(x => x.Nome.Equals(name));
+            if (contato == null)
+                return NoContent();
+            return Ok(contato);
+        }
+
+        [HttpGet("GetAll")]
+        public IActionResult GetAllContacts()
+        {
+            var contato = _context.Contatos;
+            if (contato == null)
+                return NoContent();
+            return Ok(contato);
+        }
+
         [HttpPost]
         public IActionResult Create(Contato contato)
         {
@@ -26,15 +53,35 @@ namespace ModuloAPI.Controllers
             return Ok(contato);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetId(int id)
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, Contato contato)
         {
-            var contato = _context.Contatos.Find(id);
-            if (contato == null)
-            {
+            var contatoBanco = _context.Contatos.Find(id);
+            if (contatoBanco == null)
                 return NoContent();
-            }
-            return Ok(contato);
+
+            contatoBanco.Nome = contato.Nome;
+            contatoBanco.Telefone = contato.Telefone;
+            contatoBanco.Ativo = contato.Ativo;
+
+            _context.Contatos.Update(contatoBanco);
+            _context.SaveChanges();
+
+            return Ok(contatoBanco);
         }
+
+        [HttpDelete("/delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            var contatoBanco = _context.Contatos.Find(id);
+            if (contatoBanco == null)
+                return NoContent();
+
+            _context.Contatos.Remove(contatoBanco);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Registro removido do banco" });
+        }
+
     }
 }
