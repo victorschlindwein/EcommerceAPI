@@ -11,6 +11,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.11" />
+<<<<<<< HEAD
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.11" />
+=======
+>>>>>>> b46cf216de84fd6b1268a2a7c1ca840201914494
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0-preview-23424-02" />
     <PackageReference Include="Moq" Version="4.20.69" />
     <PackageReference Include="Testcontainers" Version="3.5.0" />
