@@ -73,7 +73,5 @@ namespace ModuloAPI.Tests
             // Assert           
             Assert.IsType<OkObjectResult>(result);
         }
-
-        // Implemente testes semelhantes para as outras ações do ContatoController (GetByName, GetAllContacts, Create, Update, Delete)
     }
 }
