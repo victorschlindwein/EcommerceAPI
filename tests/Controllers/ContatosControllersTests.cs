@@ -138,8 +138,8 @@ namespace ModuloAPI.Tests
             var result = _controller.Delete(contatoId);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var emptyList = _context.Contatos.Where(x => x.Id.Equals(contatoId));
+            Assert.IsType<OkObjectResult>(result);
+            var emptyList = _context.Contatos;
             Assert.Empty(emptyList);
         }
     }
