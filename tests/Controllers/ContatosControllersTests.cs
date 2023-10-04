@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using ModuloAPI.Context;
 using ModuloAPI.Controllers;
 using ModuloAPI.Entities;
-using Moq;
 using Xunit;
 
 namespace ModuloAPI.Tests
