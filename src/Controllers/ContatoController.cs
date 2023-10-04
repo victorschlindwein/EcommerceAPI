@@ -9,7 +9,7 @@ using ModuloAPI.Entities;
 namespace ModuloAPI.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("api")]
     public class ContatoController : ControllerBase
     {
         private readonly AgendaContext _context;
@@ -18,7 +18,7 @@ namespace ModuloAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
             var contato = _context.Contatos.Find(id);
@@ -45,7 +45,7 @@ namespace ModuloAPI.Controllers
             return Ok(contato);
         }
 
-        [HttpPost]
+        [HttpPost("NewContact")]
         public IActionResult Create(Contato contato)
         {
             _context.Add(contato);
@@ -53,7 +53,7 @@ namespace ModuloAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = contato.Id }, contato);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Edit/{id}")]
         public IActionResult Update(int id, Contato contato)
         {
             var contatoBanco = _context.Contatos.Find(id);
@@ -70,7 +70,7 @@ namespace ModuloAPI.Controllers
             return Ok(contatoBanco);
         }
 
-        [HttpDelete("/delete/{id}")]
+        [HttpDelete("Delete/{id}")]
         public IActionResult Delete(int id)
         {
             var contatoBanco = _context.Contatos.Find(id);
