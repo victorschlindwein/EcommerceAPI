@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuloAPI", "ModuloAPI.csproj", "{629C0433-D8AC-4AFB-A4B0-F79A60D2AD59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuloAPI.Tests", "..\tests\ModuloAPI.Tests.csproj", "{5FF7B1D2-9E10-41F8-8A8F-A1E2AF547DB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuloAPI.Tests", "..\tests\ModuloAPI.Tests.csproj", "{5FF7B1D2-9E10-41F8-8A8F-A1E2AF547DB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

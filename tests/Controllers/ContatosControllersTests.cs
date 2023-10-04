@@ -72,5 +72,75 @@ namespace ModuloAPI.Tests
             // Assert           
             Assert.IsType<OkObjectResult>(result);
         }
+
+        [Fact]
+        public void GetAllContacts_ReturnsOkAndConctactsList_WhenFind()
+        {
+            // Arrange
+            _context.Add(CreateSampleContato(1, "Senhor teste"));
+            _context.Add(CreateSampleContato(2, "Senhor teste 2"));
+            _context.SaveChanges();
+            // Act
+            var result = _controller.GetAllContacts();
+            
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var contatos = Assert.IsAssignableFrom<DbSet<Contato>>(okResult.Value);
+            Assert.Equal(2, contatos.Count());
+        }
+
+        [Fact]
+        public void CreateNewConctact_ReturnsContact_WhenOk()
+        {
+            // Arrange
+            var novoContato = CreateSampleContato(1, "Contato teste");
+
+            // Act
+            var result = _controller.Create(novoContato);
+            
+            // Assert
+            Assert.IsType<CreatedAtActionResult>(result);
+        }
+
+        [Fact]
+       public void EditExistentContact_ReturnsEditedContact_WhenOn()
+        {
+            // Arrange
+            int contatoId = 1;
+            var contatoInicial = CreateSampleContato(contatoId, "Contato Teste");
+            _context.Add(contatoInicial);
+            _context.SaveChanges();
+
+            var contatoNomeEditado = CreateSampleContato(contatoId, "Sample Contact");
+
+            // Act
+            var result = _controller.Update(contatoId, contatoNomeEditado);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var contatoEditadoBanco = Assert.IsType<Contato>(okResult.Value);
+            
+            Assert.Equal(contatoId, contatoEditadoBanco.Id);
+
+            Assert.Equal("Sample Contact", contatoEditadoBanco.Nome);
+        }
+
+        [Fact]
+        public void DeleteExistentContact_ReturnsOk_WhenDeleted()
+        {
+            // Arrange
+            int contatoId = 1;
+            var contatoInicial = CreateSampleContato(contatoId, "Contato Teste");
+            _context.Add(contatoInicial);
+            _context.SaveChanges();
+
+            // Act
+            var result = _controller.Delete(contatoId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var emptyList = _context.Contatos.Where(x => x.Id.Equals(contatoId));
+            Assert.Empty(emptyList);
+        }
     }
 }
