@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModuloAPI.Context;
 using ModuloAPI.Entities;
 
@@ -19,44 +20,44 @@ namespace ModuloAPI.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var contato = _context.Contatos.Find(id);
+            var contato =  await _context.Contatos.FindAsync(id);
             if (contato == null)
                 return NoContent();
             return Ok(contato);
         }
 
         [HttpGet("GetByName")]
-        public IActionResult GetByName(string name)
+        public async Task<IActionResult> GetByName(string name)
         {
-            var contato = _context.Contatos.Where(x => x.Nome.Equals(name));
+            var contato = await _context.Contatos.Where(x => x.Nome.Equals(name)).ToListAsync();
             if (contato == null)
                 return NoContent();
             return Ok(contato);
         }
 
         [HttpGet("GetAll")]
-        public IActionResult GetAllContacts()
+        public async Task<IActionResult> GetAllContacts()
         {
-            var contato = _context.Contatos;
+            List<Contato> contato = await _context.Contatos.ToListAsync();
             if (contato == null)
                 return NoContent();
             return Ok(contato);
         }
 
         [HttpPost("NewContact")]
-        public IActionResult Create(Contato contato)
+        public async Task<IActionResult> Create(Contato contato)
         {
-            _context.Add(contato);
-            _context.SaveChanges();
+            await _context.AddAsync(contato);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = contato.Id }, contato);
         }
 
         [HttpPut("Edit/{id}")]
-        public IActionResult Update(int id, Contato contato)
+        public async Task<IActionResult> Update(int id, Contato contato)
         {
-            var contatoBanco = _context.Contatos.Find(id);
+            var contatoBanco = await _context.Contatos.FindAsync(id);
             if (contatoBanco == null)
                 return NoContent();
 
@@ -65,20 +66,20 @@ namespace ModuloAPI.Controllers
             contatoBanco.Ativo = contato.Ativo;
 
             _context.Contatos.Update(contatoBanco);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(contatoBanco);
         }
 
         [HttpDelete("Delete/{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var contatoBanco = _context.Contatos.Find(id);
             if (contatoBanco == null)
                 return NoContent();
 
             _context.Contatos.Remove(contatoBanco);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(new { message = "Registro removido do banco" });
         }
