@@ -35,26 +35,26 @@ namespace ModuloAPI.Tests
 
 
         [Fact]
-        public void GetById_ReturnsOkResult_WhenContactExists()
+        public async Task GetById_ReturnsOkResult_WhenContactExists()
         {
             // Arrange
             _context.Add(CreateSampleContato(1, "Nome Teste"));
             _context.SaveChanges();
 
             // Act
-            var result = _controller.GetById(1);
+            var result = await _controller.GetById(1);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
-        public void GetById_ReturnsNoContent_WhenContactDoesNotExist()
+        public async Task GetById_ReturnsNoContent_WhenContactDoesNotExist()
         {
             // Arrange
 
             // Act
-            var result = _controller.GetById(0);
+            var result = await _controller.GetById(0);
 
             // Assert
             var noContentResult = Assert.IsType<NoContentResult>(result);
@@ -62,48 +62,48 @@ namespace ModuloAPI.Tests
         }
 
         [Fact]
-        public void GetByName_ReturnsOkResult_WhenFindName()
+        public async Task GetByName_ReturnsOkResult_WhenFindName()
         {
             // Arrange
             _context.Add(CreateSampleContato(1, "Nome Teste"));
             _context.SaveChanges();
             // Act
-            var result = _controller.GetByName("Nome Teste");
+            var result = await _controller.GetByName("Nome Teste");
             // Assert           
             Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]
-        public void GetAllContacts_ReturnsOkAndConctactsList_WhenFind()
+        public async Task GetAllContacts_ReturnsOkAndConctactsList_WhenFind()
         {
             // Arrange
             _context.Add(CreateSampleContato(1, "Senhor teste"));
             _context.Add(CreateSampleContato(2, "Senhor teste 2"));
             _context.SaveChanges();
             // Act
-            var result = _controller.GetAllContacts();
+            var result = await _controller.GetAllContacts();
             
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var contatos = Assert.IsAssignableFrom<DbSet<Contato>>(okResult.Value);
+            var contatos = Assert.IsAssignableFrom<List<Contato>>(okResult.Value);
             Assert.Equal(2, contatos.Count());
         }
 
         [Fact]
-        public void CreateNewConctact_ReturnsContact_WhenOk()
+        public async Task CreateNewConctact_ReturnsContact_WhenOk()
         {
             // Arrange
             var novoContato = CreateSampleContato(1, "Contato teste");
 
             // Act
-            var result = _controller.Create(novoContato);
+            var result = await _controller.Create(novoContato);
             
             // Assert
             Assert.IsType<CreatedAtActionResult>(result);
         }
 
         [Fact]
-       public void EditExistentContact_ReturnsEditedContact_WhenOn()
+       public async Task EditExistentContact_ReturnsEditedContact_WhenOn()
         {
             // Arrange
             int contatoId = 1;
@@ -114,7 +114,7 @@ namespace ModuloAPI.Tests
             var contatoNomeEditado = CreateSampleContato(contatoId, "Sample Contact");
 
             // Act
-            var result = _controller.Update(contatoId, contatoNomeEditado);
+            var result = await _controller.Update(contatoId, contatoNomeEditado);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -126,7 +126,7 @@ namespace ModuloAPI.Tests
         }
 
         [Fact]
-        public void DeleteExistentContact_ReturnsOk_WhenDeleted()
+        public async Task DeleteExistentContact_ReturnsOk_WhenDeleted()
         {
             // Arrange
             int contatoId = 1;
@@ -135,7 +135,7 @@ namespace ModuloAPI.Tests
             _context.SaveChanges();
 
             // Act
-            var result = _controller.Delete(contatoId);
+            var result = await _controller.Delete(contatoId);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
