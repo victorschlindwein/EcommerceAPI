@@ -49,6 +49,7 @@ namespace ModuloAPI.Controllers
         [HttpPost("NewContact")]
         public async Task<IActionResult> Create(Contato contato)
         {
+            contato.DataDeCriacao = DateTime.Now;
             await _context.AddAsync(contato);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = contato.Id }, contato);
