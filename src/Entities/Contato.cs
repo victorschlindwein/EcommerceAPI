@@ -12,7 +12,7 @@ namespace ModuloAPI.Entities
         private DateTime dataDeCriacao;
         
         [Key]
-        public int Id { get; set; }
+        public int ContatoId { get; set; }
         public required string Nome { get; set; }
         public string? Telefone { get; set; }
         [EmailAddress]
