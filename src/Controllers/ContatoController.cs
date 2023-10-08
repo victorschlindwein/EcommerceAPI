@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -23,27 +24,28 @@ namespace ModuloAPI.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var contato =  await _context.Contatos.FindAsync(id);
-            if (contato == null)
-                return NoContent();
-            return Ok(contato);
+            return contato == null ? NoContent() : Ok(contato);
+        }
+
+        [HttpGet("GetByEmail/{email}")]
+        public async Task<IActionResult> GetByEmail(string email)
+        {
+            var contato = await _context.Contatos.Where(x => x.Email.Equals(email)).ToListAsync();
+            return contato == null ? NoContent() : Ok(contato);
         }
 
         [HttpGet("GetByName")]
         public async Task<IActionResult> GetByName(string name)
         {
             var contato = await _context.Contatos.Where(x => x.Nome.Equals(name)).ToListAsync();
-            if (contato == null)
-                return NoContent();
-            return Ok(contato);
+            return contato == null ? NoContent() : Ok(contato);
         }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllContacts()
         {
             List<Contato> contato = await _context.Contatos.ToListAsync();
-            if (contato == null)
-                return NoContent();
-            return Ok(contato);
+            return contato == null ? NoContent() : Ok(contato);
         }
 
         [HttpPost("NewContact")]
@@ -65,6 +67,7 @@ namespace ModuloAPI.Controllers
             contatoBanco.Nome = contato.Nome;
             contatoBanco.Telefone = contato.Telefone;
             contatoBanco.Ativo = contato.Ativo;
+            contatoBanco.Email = contato.Email;
 
             _context.Contatos.Update(contatoBanco);
             await _context.SaveChangesAsync();
