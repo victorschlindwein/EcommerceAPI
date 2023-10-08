@@ -28,9 +28,14 @@ namespace ModuloAPI.Tests
             _context.Dispose();
         }
 
-        private Contato CreateSampleContato(int id, string nome)
+        private Contato CreateSampleContato(string nome)
         {
-            return new Contato { Id = id, Nome = nome };
+            return new Contato { Nome = nome };
+        }
+
+        private Contato CreateFullContato(int id, string nome, string telefone, string email)
+        {
+            return new Contato {Id = id, Nome = nome, Telefone = telefone, Email = email, DataDeCriacao = DateTime.Now };
         }
 
 
@@ -38,11 +43,12 @@ namespace ModuloAPI.Tests
         public async Task GetById_ReturnsOkResult_WhenContactExists()
         {
             // Arrange
-            _context.Add(CreateSampleContato(1, "Nome Teste"));
+            int idContato = 1;
+            _context.Add(CreateSampleContato("Nome Teste"));
             _context.SaveChanges();
 
             // Act
-            var result = await _controller.GetById(1);
+            var result = await _controller.GetById(idContato);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -65,7 +71,7 @@ namespace ModuloAPI.Tests
         public async Task GetByName_ReturnsOkResult_WhenFindName()
         {
             // Arrange
-            _context.Add(CreateSampleContato(1, "Nome Teste"));
+            _context.Add(CreateSampleContato("Nome Teste"));
             _context.SaveChanges();
             // Act
             var result = await _controller.GetByName("Nome Teste");
@@ -77,8 +83,8 @@ namespace ModuloAPI.Tests
         public async Task GetAllContacts_ReturnsOkAndConctactsList_WhenFind()
         {
             // Arrange
-            _context.Add(CreateSampleContato(1, "Senhor teste"));
-            _context.Add(CreateSampleContato(2, "Senhor teste 2"));
+            _context.Add(CreateSampleContato("Senhor teste"));
+            _context.Add(CreateSampleContato("Senhor teste 2"));
             _context.SaveChanges();
             // Act
             var result = await _controller.GetAllContacts();
@@ -93,7 +99,7 @@ namespace ModuloAPI.Tests
         public async Task CreateNewConctact_ReturnsContact_WhenOk()
         {
             // Arrange
-            var novoContato = CreateSampleContato(1, "Contato teste");
+            var novoContato = CreateSampleContato("Contato teste");
 
             // Act
             var result = await _controller.Create(novoContato);
@@ -103,15 +109,15 @@ namespace ModuloAPI.Tests
         }
 
         [Fact]
-       public async Task EditExistentContact_ReturnsEditedContact_WhenOn()
+       public async Task EditExistentContact_ReturnsEditedContact_WhenOk()
         {
             // Arrange
             int contatoId = 1;
-            var contatoInicial = CreateSampleContato(contatoId, "Contato Teste");
+            var contatoInicial = CreateSampleContato("Contato Teste");
             _context.Add(contatoInicial);
             _context.SaveChanges();
 
-            var contatoNomeEditado = CreateSampleContato(contatoId, "Sample Contact");
+            var contatoNomeEditado = CreateSampleContato("Sample Contact");
 
             // Act
             var result = await _controller.Update(contatoId, contatoNomeEditado);
@@ -123,6 +129,30 @@ namespace ModuloAPI.Tests
             Assert.Equal(contatoId, contatoEditadoBanco.Id);
 
             Assert.Equal("Sample Contact", contatoEditadoBanco.Nome);
+       }
+
+        [Fact]
+        public async Task EditExistentFullContact_ReturnsEditedContact_WhenOk()
+        {
+            // Arrange
+            int contatoId = 1;
+            var contatoInicialSimples = CreateSampleContato("Contato Teste");
+            _context.Add(contatoInicialSimples);
+            _context.SaveChanges();
+
+            Contato contatoEditado = CreateFullContato(contatoId, "Cadastro Full", "9999999999", "email@teste.com.br");
+
+            // Act
+            var result = await _controller.Update(contatoId, contatoEditado);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var contatoEditadoBanco = Assert.IsType<Contato>(okResult.Value);
+
+            Assert.Equal(contatoEditadoBanco.Id, contatoEditado.Id);
+            Assert.Equal(contatoEditadoBanco.Nome, contatoEditado.Nome);
+            Assert.Equal(contatoEditadoBanco.Telefone, contatoEditado.Telefone);
+            Assert.Equal(contatoEditadoBanco.Email, contatoEditado.Email);
         }
 
         [Fact]
@@ -130,7 +160,7 @@ namespace ModuloAPI.Tests
         {
             // Arrange
             int contatoId = 1;
-            var contatoInicial = CreateSampleContato(contatoId, "Contato Teste");
+            var contatoInicial = CreateSampleContato("Contato Teste");
             _context.Add(contatoInicial);
             _context.SaveChanges();
 
