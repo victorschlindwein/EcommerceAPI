@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModuloAPI.Context;
 
@@ -11,9 +12,11 @@ using ModuloAPI.Context;
 namespace ModuloAPI.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    partial class AgendaContextModelSnapshot : ModelSnapshot
+    [Migration("20231009031002_AddEnderecosContext")]
+    partial class AddEnderecosContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,8 +40,9 @@ namespace ModuloAPI.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ContatoId")
-                        .HasColumnType("int");
+                    b.Property<string>("ContatoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("EnderecoPrincipal")
                         .HasColumnType("bit");
@@ -48,8 +52,6 @@ namespace ModuloAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EnderecoId");
-
-                    b.HasIndex("ContatoId");
 
                     b.ToTable("Enderecos");
                 });
@@ -71,6 +73,9 @@ namespace ModuloAPI.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -81,20 +86,6 @@ namespace ModuloAPI.Migrations
                     b.HasKey("ContatoId");
 
                     b.ToTable("Contatos");
-                });
-
-            modelBuilder.Entity("API.Entities.Endereco", b =>
-                {
-                    b.HasOne("ModuloAPI.Entities.Contato", null)
-                        .WithMany("Enderecos")
-                        .HasForeignKey("ContatoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ModuloAPI.Entities.Contato", b =>
-                {
-                    b.Navigation("Enderecos");
                 });
 #pragma warning restore 612, 618
         }

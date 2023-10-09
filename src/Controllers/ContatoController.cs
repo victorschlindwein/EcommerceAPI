@@ -54,7 +54,7 @@ namespace ModuloAPI.Controllers
             contato.DataDeCriacao = DateTime.Now;
             await _context.AddAsync(contato);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = contato.Id }, contato);
+            return CreatedAtAction(nameof(GetById), new { id = contato.ContatoId }, contato);
         }
 
         [HttpPut("Edit/{id}")]

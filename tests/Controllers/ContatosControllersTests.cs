@@ -35,7 +35,7 @@ namespace ModuloAPI.Tests
 
         private Contato CreateFullContato(int id, string nome, string telefone, string email)
         {
-            return new Contato {Id = id, Nome = nome, Telefone = telefone, Email = email, DataDeCriacao = DateTime.Now };
+            return new Contato {ContatoId = id, Nome = nome, Telefone = telefone, Email = email, DataDeCriacao = DateTime.Now };
         }
 
 
@@ -126,7 +126,7 @@ namespace ModuloAPI.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var contatoEditadoBanco = Assert.IsType<Contato>(okResult.Value);
             
-            Assert.Equal(contatoId, contatoEditadoBanco.Id);
+            Assert.Equal(contatoId, contatoEditadoBanco.ContatoId);
 
             Assert.Equal("Sample Contact", contatoEditadoBanco.Nome);
        }
@@ -149,7 +149,7 @@ namespace ModuloAPI.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var contatoEditadoBanco = Assert.IsType<Contato>(okResult.Value);
 
-            Assert.Equal(contatoEditadoBanco.Id, contatoEditado.Id);
+            Assert.Equal(contatoEditadoBanco.ContatoId, contatoEditado.ContatoId);
             Assert.Equal(contatoEditadoBanco.Nome, contatoEditado.Nome);
             Assert.Equal(contatoEditadoBanco.Telefone, contatoEditado.Telefone);
             Assert.Equal(contatoEditadoBanco.Email, contatoEditado.Email);

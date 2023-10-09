@@ -1,3 +1,4 @@
+using API.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace ModuloAPI.Entities
         private DateTime dataDeCriacao;
         
         [Key]
-        public int Id { get; set; }
+        public int ContatoId { get; set; }
         public required string Nome { get; set; }
         public string? Telefone { get; set; }
         [EmailAddress]
@@ -29,6 +30,11 @@ namespace ModuloAPI.Entities
             {
                 dataDeCriacao = DateTime.Now;
             }
+        }
+        public List<Endereco>? Enderecos { get; set; }
+        public Contato()
+        {
+            Enderecos = new List<Endereco>();
         }
     }
 }
