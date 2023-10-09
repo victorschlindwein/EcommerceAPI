@@ -11,7 +11,7 @@ using ModuloAPI.Entities;
 namespace ModuloAPI.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("Contato")]
     public class ContatoController : ControllerBase
     {
         private readonly AgendaContext _context;
@@ -20,31 +20,43 @@ namespace ModuloAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int contatoId)
         {
-            var contato =  await _context.Contatos.FindAsync(id);
+            var contato = await _context.Contatos
+                .Include(c => c.Enderecos)
+                .FirstOrDefaultAsync(c => c.ContatoId == contatoId);
+
             return contato == null ? NoContent() : Ok(contato);
         }
 
         [HttpGet("GetByEmail/{email}")]
         public async Task<IActionResult> GetByEmail(string email)
         {
-            var contato = await _context.Contatos.Where(x => x.Email.Equals(email)).ToListAsync();
+            var contato = await _context.Contatos.Where(x => x.Email.Equals(email))
+                .Include(c => c.Enderecos)
+                .ToListAsync();
+
             return contato == null ? NoContent() : Ok(contato);
         }
 
         [HttpGet("GetByName")]
         public async Task<IActionResult> GetByName(string name)
         {
-            var contato = await _context.Contatos.Where(x => x.Nome.Equals(name)).ToListAsync();
+            var contato = await _context.Contatos.Where(x => x.Nome.Equals(name))
+                .Include (c => c.Enderecos)
+                .ToListAsync();
+
             return contato == null ? NoContent() : Ok(contato);
         }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllContacts()
         {
-            List<Contato> contato = await _context.Contatos.ToListAsync();
+            List<Contato> contato = await _context.Contatos
+                .Include(c => c.Enderecos)
+                .ToListAsync();
+
             return contato == null ? NoContent() : Ok(contato);
         }
 
@@ -57,7 +69,7 @@ namespace ModuloAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = contato.ContatoId }, contato);
         }
 
-        [HttpPut("Edit/{id}")]
+        [HttpPut("EditContact/{id}")]
         public async Task<IActionResult> Update(int id, Contato contato)
         {
             var contatoBanco = await _context.Contatos.FindAsync(id);
