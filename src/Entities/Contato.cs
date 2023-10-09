@@ -1,3 +1,4 @@
+using API.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,11 @@ namespace ModuloAPI.Entities
             {
                 dataDeCriacao = DateTime.Now;
             }
+        }
+        public List<Endereco>? Enderecos { get; set; }
+        public Contato()
+        {
+            Enderecos = new List<Endereco>();
         }
     }
 }
