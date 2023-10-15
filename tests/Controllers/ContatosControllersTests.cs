@@ -112,7 +112,8 @@ namespace ModuloAPI.Tests
             // Arrange
             int contatoId = 2;
             var contatoInicial = CreateSampleContato("Contato Teste");
-            var contatoInicial2 = CreateSampleContato("Contato Teste");
+            var contatoInicial2 = CreateSampleContato("Contato Teste 2");
+            _context.Add(contatoInicial);
             _context.Add(contatoInicial2);
             _context.SaveChanges();
 

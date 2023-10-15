@@ -26,7 +26,9 @@ namespace API.Services
 
         public async Task<bool> Delete(int id)
         {
-            var contato = await _context.Contatos.Where(x => x.ContatoId.Equals(id)).ToListAsync();
+            var contato = await _context.Contatos.FindAsync(id);
+            if (contato == null)
+                return false;
             _context.Contatos.RemoveRange(contato);
             await _context.SaveChangesAsync();
             return true;
