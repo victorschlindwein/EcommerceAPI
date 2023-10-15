@@ -21,7 +21,6 @@ namespace API.Services
             var contato = await _context.Contatos
                 .Include(c => c.Enderecos)
                 .FirstOrDefaultAsync(c => c.ContatoId == contatoId);
-
             return contato;
         }
 

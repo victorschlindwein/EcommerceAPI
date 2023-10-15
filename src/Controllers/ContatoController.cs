@@ -21,10 +21,10 @@ namespace ModuloAPI.Controllers
             _contatoService = contatoService;
         }
 
-        [HttpGet("GetById")]
-        public async Task<IActionResult> GetById(int contatoId)
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var contato = await _contatoService.GetById(contatoId);
+            var contato = await _contatoService.GetById(id);
 
             return contato == null ? NoContent() : Ok(contato);
         }
