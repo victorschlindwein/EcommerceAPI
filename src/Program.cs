@@ -1,7 +1,7 @@
 using ModuloAPI.Context;
 using Microsoft.EntityFrameworkCore;
-using API.Entities;
 using API.Services;
+using API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +11,9 @@ builder.Services.AddDbContext<AgendaContext>(options =>
         builder.Configuration.GetConnectionString("ConexaoPadrao")
         ));
 
+builder.Services.AddScoped<IContatoRepository, ContatoRepository>();
 builder.Services.AddScoped<IContatoService, ContatoService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
