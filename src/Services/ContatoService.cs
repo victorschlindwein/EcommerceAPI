@@ -1,4 +1,4 @@
-﻿using API.Entities;
+﻿using API.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,79 +9,46 @@ namespace API.Services
 {
     public class ContatoService : IContatoService
     {
-        private readonly AgendaContext _context;
+        private readonly IContatoRepository _contatoRepository;
 
-        public ContatoService(AgendaContext context)
+        public ContatoService(IContatoRepository contatoRepository)
         {
-            _context = context;
+            _contatoRepository = contatoRepository;
         }
 
-        public async Task<Contato> GetById(int contatoId)
+        public async Task<Contato> CreateAsync(Contato contato)
         {
-            var contato = await _context.Contatos
-                .Include(c => c.Enderecos)
-                .FirstOrDefaultAsync(c => c.ContatoId == contatoId);
-            return contato;
+            return await _contatoRepository.CreateAsync(contato);
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var contato = await _context.Contatos.FindAsync(id);
-            if (contato == null)
-                return false;
-            _context.Contatos.RemoveRange(contato);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _contatoRepository.DeleteAsync(id);
         }
 
-        public async Task<List<Contato>> GetAllContacts()
+        public async Task<List<Contato>> GetAllContatoAsync()
         {
-            var contatos = await _context.Contatos
-                .Include(c => c.Enderecos)
-                .ToListAsync();
-
-            return contatos;
+            return await _contatoRepository.GetAllContatoAsync();
         }
 
-        public async Task<List<Contato>> GetByEmail(string email)
+        public async Task<List<Contato>> GetContatoByEmailAsync(string email)
         {
-            var contato = await _context.Contatos.Where(x => x.Email.Equals(email))
-                .Include(c => c.Enderecos)
-                .ToListAsync();
-
-            return contato;
+            return await _contatoRepository.GetContatoByEmailAsync(email);
         }
 
-        public async Task<List<Contato>> GetByName(string name)
+        public async Task<Contato> GetContatoByIdAsync(int id)
         {
-            var contato = await _context.Contatos.Where(x => x.Nome.Equals(name))
-                .Include(c => c.Enderecos)
-                .ToListAsync();
-
-            return contato;
+            return await _contatoRepository.GetContatoByIdAsync(id);
         }
 
-        public async Task<Contato> Create(Contato contato)
+        public async Task<List<Contato>> GetContatoByNameAsync(string name)
         {
-            await _context.Contatos.AddAsync(contato);
-            await _context.SaveChangesAsync();
-
-            return contato;
+            return await _contatoRepository.GetContatoByNameAsync(name);
         }
 
-        public async Task<Contato> Update(int id, Contato contato)
+        public async Task<Contato> UpdateAsync(int id, Contato contato)
         {
-            var contatoBanco = await _context.Contatos.FindAsync(id);
-
-            contatoBanco.Nome = contato.Nome;
-            contatoBanco.Telefone = contato.Telefone;
-            contatoBanco.Ativo = contato.Ativo;
-            contatoBanco.Email = contato.Email;
-
-            _context.Contatos.Update(contatoBanco);
-            await _context.SaveChangesAsync();
-
-            return contatoBanco;
+            return await _contatoRepository.UpdateAsync(id, contato);
         }
     }
 }

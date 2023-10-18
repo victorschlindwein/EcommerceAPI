@@ -1,4 +1,4 @@
-﻿using API.Entities;
+﻿using API.Repositories;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
 using ModuloAPI.Context;
@@ -14,6 +14,7 @@ namespace API.Tests.Fixtures
     {
         public AgendaContext Context { get; private set; }
         public IContatoService ContatoService { get; private set; }
+        public IContatoRepository ContatoRepository { get; private set; }
         public ContatoTestFixture() 
         {
             var options = new DbContextOptionsBuilder<AgendaContext>()
@@ -21,7 +22,9 @@ namespace API.Tests.Fixtures
                 .Options;
             
             Context = new AgendaContext(options);
-            ContatoService = new ContatoService(Context);
+
+            ContatoRepository = new ContatoRepository(Context);
+            ContatoService = new ContatoService(ContatoRepository);
         }
 
         public void Dispose()

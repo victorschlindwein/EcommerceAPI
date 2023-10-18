@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using API.Entities;
+using API.Services;
 using API.Tests.Fixtures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -31,12 +31,6 @@ namespace ModuloAPI.Tests
             return new Contato { Nome = nome };
         }
 
-        private Contato CreateFullContato(int id, string nome, string telefone, string email)
-        {
-            return new Contato { Nome = nome, Telefone = telefone, Email = email, DataDeCriacao = DateTime.Now };
-        }
-
-
         [Fact]
         public async Task GetById_ReturnsOkResult_WhenContactExists()
         {
@@ -46,7 +40,7 @@ namespace ModuloAPI.Tests
             _context.SaveChanges();
 
             // Act
-            Contato result = await _contatoService.GetById(idContato);
+            Contato result = await _contatoService.GetContatoByIdAsync(idContato);
 
             // Assert
             Assert.Equal(idContato, result.ContatoId);
@@ -58,7 +52,7 @@ namespace ModuloAPI.Tests
             // Arrange
 
             // Act
-            var result = await _contatoService.GetById(-1);
+            var result = await _contatoService.GetContatoByIdAsync(-1);
 
             // Assert
             Assert.Null(result);
@@ -72,7 +66,7 @@ namespace ModuloAPI.Tests
             _context.Add(CreateSampleContato(name));
             _context.SaveChanges();
             // Act
-            var contatos = await _contatoService.GetByName("Nome Teste");
+            var contatos = await _contatoService.GetContatoByNameAsync("Nome Teste");
 
             // Assert
             Assert.NotNull(contatos);
@@ -87,7 +81,7 @@ namespace ModuloAPI.Tests
             _context.Add(CreateSampleContato("Senhor teste 2"));
             _context.SaveChanges();
             // Act
-            var result = await _contatoService.GetAllContacts();
+            var result = await _contatoService.GetAllContatoAsync();
 
             // Assert
             Assert.NotNull(result);
@@ -100,7 +94,7 @@ namespace ModuloAPI.Tests
             var novoContato = CreateSampleContato("Contato teste");
 
             // Act
-            var result = await _contatoService.Create(novoContato);
+            var result = await _contatoService.CreateAsync(novoContato);
 
             // Assert
             Assert.NotNull(result);
@@ -118,7 +112,7 @@ namespace ModuloAPI.Tests
             _context.SaveChanges();
 
             // Act
-            var result = await _contatoService.Delete(contatoId);
+            var result = await _contatoService.DeleteAsync(contatoId);
 
             // Assert
             Assert.True(result);
