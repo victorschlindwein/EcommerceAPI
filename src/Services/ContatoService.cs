@@ -1,8 +1,4 @@
 ﻿using API.Repositories;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ModuloAPI.Context;
 using ModuloAPI.Entities;
 
 namespace API.Services

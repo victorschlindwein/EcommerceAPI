@@ -1,7 +1,7 @@
-using ModuloAPI.Context;
-using Microsoft.EntityFrameworkCore;
-using API.Services;
 using API.Repositories;
+using API.Services;
+using Microsoft.EntityFrameworkCore;
+using ModuloAPI.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 

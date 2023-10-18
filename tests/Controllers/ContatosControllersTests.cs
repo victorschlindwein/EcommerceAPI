@@ -1,17 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using API.Services;
 using API.Tests.Fixtures;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using ModuloAPI.Context;
-using ModuloAPI.Controllers;
 using ModuloAPI.Entities;
-using Xunit;
 
 namespace ModuloAPI.Tests
 {
