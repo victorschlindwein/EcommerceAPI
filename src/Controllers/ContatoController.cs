@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ModuloAPI.Context;
 using ModuloAPI.Entities;
 
 namespace ModuloAPI.Controllers
@@ -75,7 +68,7 @@ namespace ModuloAPI.Controllers
         public async Task<IActionResult> DeleteAsync(int id)
         {
             await _contatoService.DeleteAsync(id);
-            
+
             return NoContent();
         }
     }
